@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FlipOut Diner</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bangers&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div class="title">
+    <h2>FlipOut</h2>
+    <h1>DINER</h1>
+</div>
+<div class="container" id="container"></div>
+
+</body>
+<script>
+    const menuLink = 'https://script.google.com/macros/s/AKfycbyD33cVGcAJoLf8XqmPmZIJEHWbdKSRbUw75L8vMH8ldY_XsvK2YB224o8SMwI2n480/exec';
+    console.log(menuLink);
+    
+    const fetchMenu = async () => {
+    try {
+        const res = await fetch(menuLink);
+        if (!res.ok) {
+            throw new Error(res.status);
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        console.log(error);
+    }
+}
+let categories = []
+window.onload=function() {
+    fetchMenu().then((result)=>{
+        console.log(result);
+        result.forEach(element => {
+            categories.push(element.category)            
+        });
+        categories = [...new Set(categories)]
+        console.log(categories);
+        for (let i = 0; i < categories.length; i++) {
+            const fieldset = document.createElement("fieldset");
+            const legend = document.createElement("legend");
+            legend.textContent = categories[i]; 
+            fieldset.appendChild(legend);
+            const container = document.getElementById("container");
+            container.appendChild(fieldset);
+            const ul = document.createElement("ul");
+            result.forEach(element => {
+                if(element.category === categories[i]){
+                    const li = document.createElement("li");
+                    li.textContent = element.item;
+                    ul.appendChild(li);
+                }          
+            });
+            fieldset.appendChild(ul);
+        }
+        
+
+        }   
+    );   
+};
+</script>
+</html>
