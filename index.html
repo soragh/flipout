@@ -54,7 +54,7 @@ window.onload=function() {
             result.forEach(element => {
                 if(element.category === categories[i]){
                     const li = document.createElement("li");
-                    li.textContent = element.item;
+                    li.textContent = `${element.item} ... ${element.price}`;
                     ul.appendChild(li);
                 }          
             });
